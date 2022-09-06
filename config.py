@@ -7,7 +7,7 @@ CUBOX_FOLDER = None
 
 # 订阅源地址
 FEED_LIST = [
-    'https://promiseland.top/index.xml',
+    'https://liuyu.xin/atom.xml',
     'https://happyxiao.com/feed/'
 ]
 
