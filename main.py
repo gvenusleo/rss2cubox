@@ -39,13 +39,18 @@ def feed2cubox(api, feed_url, cubox_tags, cubox_folder, last_time):
     if last_time > update_time:
         success = None
     else:
-        article_list = feed.entries
-        for i in article_list:
-            if i.published_parsed < last_time:
+        for entry in feed.entries:
+            if 'published_parsed' in entry:
+                entry_time = entry.published_parsed
+            elif 'updated_parsed' in entry:
+                entry_time = entry.updated_parsed
+            else:
+                entry_time = entry.created_parsed
+            if entry_time < last_time:
                 break
-            article_url = i.link
-            article_title = i.title
-            article_description = i.description
+            article_url = entry.link
+            article_title = entry.title
+            article_description = entry.description
             data = {
                 'type': 'url',
                 'content': article_url,
@@ -67,11 +72,11 @@ def rss2cubox():
     主程序
     :return: None
     """
-    cubox_api = CUBOX_API  # Cubox API
-    cubox_tags = CUBOX_TAGS  # 指定文章标签
-    cubox_folder = CUBOX_FOLDER  # 指定收藏夹
-    feed_list = FEED_LIST  # 订阅源地址列表
-    start_time = START_TIME  # 第一次运行时发送的最早的文章日期
+    cubox_api = CUBOX_API       # Cubox API
+    cubox_tags = CUBOX_TAGS     # 指定文章标签
+    cubox_folder = CUBOX_FOLDER # 指定收藏夹
+    feed_list = FEED_LIST       # 订阅源地址列表
+    start_time = START_TIME     # 第一次运行时发送的最早的文章日期
 
     print('-' * 30)
     last_time = log(start_time)
